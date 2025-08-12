@@ -3,6 +3,7 @@ package com.ProductManagement.controller;
 import java.net.URI;
 
 import org.apache.coyote.BadRequestException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -44,16 +45,13 @@ public class OrderController {
     // POST /api/orders → Place a new order
     @PostMapping
     public ResponseEntity<OrderResponseDTO> place(@Valid @RequestBody OrderRequestDTO req) throws Exception {
+        // Step 1: Call service to place a new order
         OrderResponseDTO created = orderService.placeOrder(req);
-        
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(created.getId())
-                .toUri();
-        
-        return ResponseEntity.created(location).body(created);
-    }
 
+        // Step 2: Return the created order with 201 status
+        return ResponseEntity.status(HttpStatus.CREATED).body(created);
+    }
+    
     // GET /api/orders/{id} → View order by ID
     @GetMapping("/{id}")
     public ResponseEntity<OrderResponseDTO> get(@PathVariable Long id) {
