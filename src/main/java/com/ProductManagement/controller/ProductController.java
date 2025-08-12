@@ -1,40 +1,63 @@
 package com.ProductManagement.controller;
 
 
-
-import java.net.URI;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.ProductManagement.DTO.CustomerDTO;
-import com.ProductManagement.service.CustomerService;
+import com.ProductManagement.DTO.ProductDTO;
+import com.ProductManagement.service.ProductService;
+
+import jakarta.validation.Valid;
+
+
+
+import java.net.URI;
+import java.util.List;
+
+import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import com.ProductManagement.DTO.ProductDTO;
+import com.ProductManagement.service.ProductService;
 
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/customers") // Base path
-public class CustomerController {
- 
-    private final CustomerService customerService;
+@RequestMapping("/api/products") // All product endpoints start with this
+public class ProductController {
+	
+    private final ProductService productService;
 
-    // Constructor injection
-    public CustomerController(CustomerService customerService) {
-        this.customerService = customerService;
+    // Constructor injection — avoids NullPointerException
+    public ProductController(ProductService productService) {
+        this.productService = productService;
     }
 
-    // POST /api/customers → Register a customer
+    // POST /api/products → Add a new product
     @PostMapping
-    public ResponseEntity<CustomerDTO> registerCustomer(
-        @Valid @RequestBody CustomerDTO dto) throws Exception {
-        CustomerDTO created = customerService.createCustomer(dto);
-        return ResponseEntity.ok(created);
-    }
-}
+    public ResponseEntity<ProductDTO> create(@Valid @RequestBody ProductDTO dto) {
+        // Step 1: Call service to create the product
+        ProductDTO created = productService.createProduct(dto);
 
+        // Step 2: Return created product with 201 status
+        return ResponseEntity.status(HttpStatus.CREATED).body(created);
+    }
+
+    // GET /api/products → Get all products
+    @GetMapping
+    public ResponseEntity<List<ProductDTO>> getAllProducts() {
+        return ResponseEntity.ok(productService.getAllProducts());
+    }
+
+   
+}
 
