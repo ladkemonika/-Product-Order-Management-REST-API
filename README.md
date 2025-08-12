@@ -37,7 +37,7 @@ Java 11+
 Spring Boot
 Spring Data JPA
 Maven
-H2/MySQL
+MySQL
 Lombok 
 
 5.Deliverables
