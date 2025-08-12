@@ -26,7 +26,7 @@ PUT /api/orders/{id}/cancel Cancel an order
 3. Core Features
 
 Use Spring Boot  with REST API annotations.
-Use in-memory database MySQL/PostgreSQL (optional).
+Use in-memory database MySQL.
 Input validation using annotations (@NotNull, @Size, @Email, etc.)
 Use @Service, @Repository, @Controller layers properly.
 Return proper HTTP status codes and JSON responses.
